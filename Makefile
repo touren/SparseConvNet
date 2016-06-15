@@ -1,11 +1,11 @@
 CC=g++
 CFLAGS=--std=c++11 -O3
 NVCC=nvcc
-NVCCFLAGS=--std=c++11 -arch sm_20 -O3
+NVCCFLAGS=--std=c++11 -arch sm_30 -O3
 OBJ=BatchProducer.o ConvolutionalLayer.o ConvolutionalTriangularLayer.o IndexLearnerLayer.o MaxPoolingLayer.o MaxPoolingTriangularLayer.o NetworkArchitectures.o NetworkInNetworkLayer.o NetworkInNetworkPReLULayer.o Picture.o Regions.o Rng.o SigmoidLayer.o SoftmaxClassifier.o SparseConvNet.o SparseConvNetCUDA.o SpatiallySparseBatch.o SpatiallySparseBatchInterface.o SpatiallySparseDataset.o SpatiallySparseLayer.o TerminalPoolingLayer.o readImageToMat.o types.o utilities.o vectorCUDA.o ReallyConvolutionalLayer.o vectorHash.o
 OBJCV=$(OBJ) OpenCVPicture.o SpatiallySparseDatasetOpenCV.o
 OBJCVT=$(OBJ) OpenCVTriangularPicture.o SpatiallySparseDatasetOpenCV.o
-LIBS=-lopencv_core -lopencv_highgui -lopencv_imgproc -lrt -lcublas -larmadillo
+LIBS=-lopencv_core -lopencv_highgui -lopencv_imgproc  -lcublas -larmadillo
 
 %.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
@@ -64,3 +64,6 @@ plankton: $(OBJCV) plankton.o
 
 cifar10indexLearning: $(OBJCV) SpatiallySparseDatasetCIFAR10.o cifar10indexLearning.o
 	$(NVCC) -o cifar10indexLearning $(OBJCV) SpatiallySparseDatasetCIFAR10.o cifar10indexLearning.o $(LIBS) $(NVCCFLAGS)
+
+stl10: $(OBJCV) SpatiallySparseDatasetSTL10.o stl10.o
+	$(NVCC) -o stl10 $(OBJCV) SpatiallySparseDatasetSTL10.o stl10.o $(LIBS) $(NVCCFLAGS)

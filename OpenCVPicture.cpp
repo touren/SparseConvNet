@@ -379,6 +379,8 @@ void OpenCVPicture::codifyInputData(SparseGrid &grid,
   int x1 = std::min(mat.cols, spatialSize - xOffset - spatialSize / 2);
   int y0 = std::max(0, -yOffset - spatialSize / 2);
   int y1 = std::min(mat.rows, spatialSize - yOffset - spatialSize / 2);
+//  printf("OpenCVPicture::codifyInputData x0=%d x1=%d y0=%d y1=%d xf=%d yf=%d fs=%ld ss=%d ss=%d row=%d col=%d\n", x0, x1, y0, y1, xOffset, yOffset, features.size(), nSpatialSites, spatialSize,
+//  mat.rows, mat.cols);
   float *matData = ((float *)(mat.data));
   for (int x = x0; x < x1; x++) {
     for (int y = y0; y < y1; y++) {
@@ -399,6 +401,9 @@ void OpenCVPicture::codifyInputData(SparseGrid &grid,
       }
     }
   }
+//  printf("OpenCVPicture::codifyInputData fs=%ld ss=%d ss=%d row=%d col=%d\n", features.size(), nSpatialSites, spatialSize,
+//          mat.rows, mat.cols);
+
 }
 
 void matrixMul2x2inPlace(float &c00, float &c01, float &c10, float &c11,

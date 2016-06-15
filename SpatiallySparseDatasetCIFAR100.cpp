@@ -3,8 +3,7 @@
 #include <iostream>
 #include <fstream>
 
-void readCIFAR100File(std::vector<Picture *> &characters,
-                      const char *filename) {
+void readCIFAR100File(std::vector<Picture *> &characters, const char *filename) {
   std::ifstream file(filename, std::ios::in | std::ios::binary);
   if (!file) {
     std::cout << "Cannot find " << filename << std::endl;

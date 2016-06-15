@@ -152,11 +152,13 @@ void NetworkInNetworkLayer::preprocess(SpatiallySparseBatch &batch,
   output.grids = input.grids;
   int o = nFeaturesOut * (batch.type == TRAINBATCH ? (1.0f - dropout) : 1.0f);
   output.featuresPresent.hVector() = rng.NchooseM(nFeaturesOut, o);
+  //printf("NetworkInNetworkLayer::preprocess ss=%d fi=%d fo=%d o=%d ifp=%d ofp=%d of=%d\n", input.spatialSize, nFeaturesIn , nFeaturesOut, o, input.featuresPresent.size(),  output.featuresPresent.size(), output.nFeatures);
   output.backpropErrors = true;
 }
 void NetworkInNetworkLayer::forwards(SpatiallySparseBatch &batch,
                                      SpatiallySparseBatchInterface &input,
                                      SpatiallySparseBatchInterface &output) {
+//  printf("NetworkInNetworkLayer::forwards ss=%d fi=%d fo=%d ifp=%d ofp=%d of=%d\n", input.spatialSize, nFeaturesIn , nFeaturesOut, input.featuresPresent.size(),  output.featuresPresent.size(), output.nFeatures);
   output.sub->features.resize(output.nSpatialSites *
                               output.featuresPresent.size());
   if (batch.type == TRAINBATCH and
@@ -222,6 +224,7 @@ void NetworkInNetworkLayer::backwards(SpatiallySparseBatch &batch,
                                       SpatiallySparseBatchInterface &input,
                                       SpatiallySparseBatchInterface &output,
                                       float learningRate, float momentum) {
+//  printf("NetworkInNetworkLayer::backwards fi=%d fo=%d ifp=%d ofp=%d of=%d\n", nFeaturesIn , nFeaturesOut, input.featuresPresent.size(),  output.featuresPresent.size(), output.nFeatures);
   applySigmoidBackProp(output, output, fn, memStream);
   dw.resize(input.featuresPresent.size() * output.featuresPresent.size());
   db.resize(output.featuresPresent.size());

@@ -7,6 +7,7 @@ int batchSize = 50;
 
 Picture *OpenCVPicture::distort(RNG &rng, batchType type) {
   OpenCVPicture *pic = new OpenCVPicture(*this);
+//  std::cout << "matrix rows=" << pic->mat.rows << " cols=" << pic->mat.cols << " depth=" << pic->mat.depth() <<  std::endl;
   if (epoch <= 400 and type == TRAINBATCH) {
     // 2x2 identity matrix:
     // Generate an affine distortion matrix
@@ -27,11 +28,18 @@ Picture *OpenCVPicture::distort(RNG &rng, batchType type) {
     pic->affineTransform(c00, c01, c10, c11);
     pic->jiggle(rng, 16);
     pic->colorDistortion(rng, 25.5, 0.15, 2.4, 2.4);
+    //std::cout << "distort matrix\t" << c00 << " " << c01 << std::endl << "\t\t" << c10 << " " << c11 << std::endl;
+//    std::cout << "matrix rows=" << pic->mat.rows << " cols=" << pic->mat.cols << " depth=" << pic->mat.depth() <<  std::endl;
   }
   return pic;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+  if (argc > 1) {
+    int epo = atoi(argv[1]);
+    if (epo > 0) epoch = epo;
+  }
+
   std::string baseName = "weights/cifar10";
 
   SpatiallySparseDataset trainSet = Cifar10TrainSet();
@@ -43,6 +51,12 @@ int main() {
       2, 12, 32 /* 32n units in the n-th hidden layer*/, powf(2, 0.3333),
       VLEAKYRELU, trainSet.nFeatures, trainSet.nClasses,
       0.1f /*dropout multiplier in the range [0,0.5] */, cudaDevice);
+
+  for (int e = 10; e <= 410; e += 30) {
+    cnn.loadWeights(baseName, e);
+    cnn.processDatasetRepeatTest(testSet, batchSize / 2, 20);
+  }
+
   if (epoch > 0)
     cnn.loadWeights(baseName, epoch);
   for (epoch++; epoch <= 410; epoch++) {
@@ -50,8 +64,8 @@ int main() {
     cnn.processDataset(trainSet, batchSize, 0.003 * exp(-0.01 * epoch), 0.99);
     if (epoch % 10 == 0)
       cnn.saveWeights(baseName, epoch);
-    if (epoch % 100 == 0)
-      cnn.processDatasetRepeatTest(testSet, batchSize / 2, 3);
+    if (epoch % 50 == 0)
+      cnn.processDatasetRepeatTest(testSet, batchSize / 2, 15);
   }
   cnn.processDatasetRepeatTest(testSet, batchSize / 2, 100);
 }

@@ -38,6 +38,7 @@ BatchProducer::BatchProducer(SparseConvNetCUDA &cnn,
 }
 
 void BatchProducer::preprocessBatch(int c, int cc, RNG &rng) {
+//  printf("BatchProducer::preprocessBatch c=%d cc=%d f=%d ss=%d bb=%d\n", c, cc, dataset.nFeatures, spatialSize, batchSize);
   cnn.batchPool[cc].reset();
   cnn.batchPool[cc].type = dataset.type;
   cnn.batchPool[cc].interfaces[0].nFeatures = dataset.nFeatures;
@@ -58,6 +59,8 @@ void BatchProducer::preprocessBatch(int c, int cc, RNG &rng) {
         cnn.batchPool[cc].interfaces[0].spatialSize);
     if (pic != dataset.pictures[permutation[i]])
       delete pic;
+//    printf("BatchProducer::preprocessBatch codifyInputData site=%d size=%d \n", cnn.batchPool[cc].interfaces[0].nSpatialSites, cnn.batchPool[cc].interfaces[0].spatialSize);
+
   }
   assert(cnn.batchPool[cc].interfaces[0].sub->features.size() ==
          cnn.batchPool[cc].interfaces[0].nFeatures *
@@ -88,6 +91,7 @@ void BatchProducer::preprocessBatch(int c, int cc, RNG &rng) {
 
 #ifdef MULTITHREAD_BATCH_PRODUCTION
 void BatchProducer::batchProducerThread(int nThread) {
+  //printf("batchProducerThread t=%d, b=%d bb=%d\n", nThread, nBatches, cnn.nBatchProducerThreads);
   cudaSetDevice(cnn.deviceID);
   // cudaSafeCall(cudaStreamDestroy(cnn.batchMemStreams[nThread].stream));
   // cudaSafeCall(cudaStreamCreate(&cnn.batchMemStreams[nThread].stream));
