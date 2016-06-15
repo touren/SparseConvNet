@@ -18,3 +18,10 @@ kagglePlanktonQuick
 cifar10indexLearning
 old/
 Data/plankton-JO-2/
+
+*.i
+*.ii
+*.gpu
+*.ptx
+*.cubin
+*.fatbin
