@@ -6,6 +6,10 @@ brew install google-sparsehash
 brew install armadillo
 brew install homebrew/science/armadillo
 brew install opencv
+export PATH=/Developer/NVIDIA/CUDA-7.5/bin:$PATH
+export DYLD_LIBRARY_PATH=/Developer/NVIDIA/CUDA-7.5/lib:$DYLD_LIBRARY_PATH
+make cifar10
+./cifar10
 ```
 
 # SparseConvNet
