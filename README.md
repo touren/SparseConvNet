@@ -1,10 +1,12 @@
 # How to build on MacOS
+```
+#Install CUDA 7.5 from https://developer.nvidia.com/cuda-downloads
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null 2> /dev/null
 brew install google-sparsehash
 brew install armadillo
 brew install homebrew/science/armadillo
 brew install opencv
-
+```
 
 # SparseConvNet
 ## A spatially-sparse convolutional neural network
