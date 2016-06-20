@@ -1,3 +1,11 @@
+# How to build on MacOS
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null 2> /dev/null
+brew install google-sparsehash
+brew install armadillo
+brew install homebrew/science/armadillo
+brew install opencv
+
+
 # SparseConvNet
 ## A spatially-sparse convolutional neural network
 ### [Ben Graham](http://www2.warwick.ac.uk/fac/sci/statistics/staff/academic-research/graham/), [University of Warwick](http://www2.warwick.ac.uk/fac/sci/statistics/), 2013-2015, GPLv3
